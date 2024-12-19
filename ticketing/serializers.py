@@ -2,11 +2,22 @@ from rest_framework import serializers
 from .models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 
+# class EventSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Event
+#         fields = '__all__'
+class EventImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventImage
+        fields = ['id', 'images']
+        extra_kwargs = {'images': {'required': False}}  
 class EventSerializer(serializers.ModelSerializer):
+    images = EventImageSerializer(many=True)  # Serialize related images
+
     class Meta:
         model = Event
-        fields = '__all__'
-
+        fields = ['id', 'eventName', 'eventTiming', 'eventCapacity', 'eventPriceAdult', 'eventPriceChild', 
+                  'eventStatus', 'eventDisplay', 'eventActive', 'images']
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
